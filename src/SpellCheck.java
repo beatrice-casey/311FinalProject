@@ -64,7 +64,7 @@
                }
                if (b[x_length][y_length] == b[x_length-1][y_length-1]) {
                     Print_LCS(X, x_length-1, y_length-1);
-                    System.out.println(X);
+                    //System.out.println(X);
                } else if(b[x_length][y_length] == b[x_length-1][y_length]) {
                     Print_LCS(X, x_length-1, y_length);
                } else {
@@ -82,25 +82,26 @@
 
           }
           public static void checkInList(String input) {
-
+               int inputSize = input.length();
+               List<String> ans= new ArrayList<String>();
                for (int i = 0; i < words.size(); i++) {
                     LCS_Length(input, words.get(i));
                     //System.out.println(c[input.length()-1][words.get(i).length()-1]);
                     if (c[input.length()-1][words.get(i).length()-1] >= input.length()-1) {
                        //System.out.println("pass");
                         Print_LCS(words.get(i), input.length() - 1, words.get(i).length() - 1);
-                         possibilites.add(words.get(i));
+                        possibilites.add(words.get(i));
                     }
                }
 
-               for (int i = 0; i < possibilites.size(); i++) {
-                    if (possibilites.get(i).length() != input.length()) {
-                         possibilites.remove(i);
+               for (int i = 1; i < possibilites.size(); i++) {
+                    if (possibilites.get(i).length() == inputSize) {
+                         ans.add(possibilites.get(i));
                     }
                }
 
-               for (int i = 0; i < possibilites.size(); i++) {
-                    System.out.println(possibilites.get(i));
+               for (int i = 0; i < ans.size(); i++) {
+                    System.out.println(ans.get(i));
                }
 
 
