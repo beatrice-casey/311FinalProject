@@ -15,7 +15,7 @@ This project was completed by:
 
 #### Project Description
 
-Our task was to implement a spell check system from scratch. Provided a list of words, our goal was to use a Longest-Common Subsequence detector to solve this problem. Implemented in Java, we used Java's built in ArrayList data structure to hold a given list of words as well as to hold a list of possible correct spellings per the user input. Finally, our interface cosists of the program automatically prompting the user through the duration of it's functionality.
+Our task was to implement a spell check system from scratch. Provided a list of words, our goal was to use a Longest-Common Subsequence detector to solve this problem. Implemented in Java, we used Java's built in ArrayList data structure to hold a given list of words as well as to hold a list of possible correct spellings per the user input. Finally, our interface consists of the program automatically prompting the user through the duration of it's functionality.
 
 #### Running Our Project
 
