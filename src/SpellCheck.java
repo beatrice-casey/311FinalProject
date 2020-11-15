@@ -23,17 +23,52 @@
      public class SpellCheck {
 
           private static List<String> words= new ArrayList<String>();
+          private static int [][] b;
+          private static int [][] c;
 
-          public boolean LCS_Length(String X, String Y) {
+          public static void LCS_Length(String X, String Y) {
                int m = X.length();
                int n = Y.length();
-
-               if (m == n) {
-                    return true;
-               } else {
-                    return false;
+               b = new int[m][n];
+               c = new int [m][n];
+               int i;
+               int j;
+               for (i = 1; i < m; i++) {
+                    c[i][0] = 0;
+               }
+               for (j = 0; j < n; j++) {
+                    c[0][j]= 0;
                }
 
+               for (i = 1; i < m; i++) {
+                    for (j = 1; j < n; j++) {
+                         if (X.charAt(i) == Y.charAt(j)) {
+                              c[i][j] = c[i - 1][j - 1] + 1;
+                              b[i][j] = b[i-1][j-1];
+                         } else if (c[i-1][j] >= c[i][j-1]) {
+                              c[i][j] = c[i-1][j];
+                              b[i][j] = b[i-1][j];
+                         } else {
+                              c[i][j] = c[i][j-1];
+                              b[i][j] = b[i][j-1];
+                         }
+                    }
+               }
+
+          }
+
+          private static void Print_LCS(String X, int x_length, int y_length) {
+               if (x_length == 0 || y_length == 0) {
+                    return;
+               }
+               if (b[x_length][y_length] == b[x_length-1][y_length-1]) {
+                    Print_LCS(X, x_length-1, y_length-1);
+                    System.out.println(X);
+               } else if(b[x_length][y_length] == b[x_length-1][y_length]) {
+                    Print_LCS(X, x_length-1, y_length);
+               } else {
+                    Print_LCS(X, x_length, y_length-1);
+               }
           }
 
           public static void loadWordList() throws FileNotFoundException {
@@ -41,6 +76,15 @@
                Scanner scanner = new Scanner(file);
                while (scanner.hasNext()) {
                     words.add(scanner.next());
+               }
+
+
+          }
+          public static void checkInList(String input) {
+
+               for (int i = 0; i < words.size(); i++) {
+                    LCS_Length(input, words.get(i));
+                    Print_LCS(input, input.length()-1, words.get(i).length()-1);
                }
 
 
@@ -56,22 +100,10 @@
 
                checkInList(input);
 
-          }
-
-          private static void checkInList(String input) {
-               List<String> possibleResults = new ArrayList<String>();
-               for (int i = 0; i < words.size(); i++) {
-                    if (words.get(i).contains(input)) {
-                         possibleResults.add(words.get(i));
-                         System.out.println(possibleResults);
-                    }
-               }
-               for (int i = 0; i < possibleResults.size(); i++) {
-                    if (input.equals(possibleResults.get(i))) {
-                         System.out.println(possibleResults.get(i));
-                    }
-               }
 
           }
+
+
+
 
      }
