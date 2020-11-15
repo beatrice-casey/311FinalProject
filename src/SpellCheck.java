@@ -23,6 +23,7 @@
      public class SpellCheck {
 
           private static List<String> words= new ArrayList<String>();
+          private static List<String> possibilites= new ArrayList<String>();
           private static int [][] b;
           private static int [][] c;
 
@@ -84,7 +85,22 @@
 
                for (int i = 0; i < words.size(); i++) {
                     LCS_Length(input, words.get(i));
-                    Print_LCS(input, input.length()-1, words.get(i).length()-1);
+                    //System.out.println(c[input.length()-1][words.get(i).length()-1]);
+                    if (c[input.length()-1][words.get(i).length()-1] >= input.length()-1) {
+                       //System.out.println("pass");
+                        Print_LCS(words.get(i), input.length() - 1, words.get(i).length() - 1);
+                         possibilites.add(words.get(i));
+                    }
+               }
+
+               for (int i = 0; i < possibilites.size(); i++) {
+                    if (possibilites.get(i).length() != input.length()) {
+                         possibilites.remove(i);
+                    }
+               }
+
+               for (int i = 0; i < possibilites.size(); i++) {
+                    System.out.println(possibilites.get(i));
                }
 
 
