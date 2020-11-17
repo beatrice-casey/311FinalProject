@@ -23,54 +23,35 @@
      public class SpellCheck {
 
           private static List<String> words= new ArrayList<String>();
-          private static List<String> possibilites= new ArrayList<String>();
-          private static int [][] b;
-          private static int [][] c;
+          private static List<Integer> LCSScores= new ArrayList<Integer>();
 
-          public static void LCS_Length(String X, String Y) {
+          public static int LCS_Length(String X, String Y) {
                int m = X.length();
                int n = Y.length();
-               b = new int[m][n];
-               c = new int [m][n];
+               int [][]LCSLength = new int [m+1][n+1];
                int i;
                int j;
                for (i = 1; i < m; i++) {
-                    c[i][0] = 0;
+                    LCSLength[i][0] = 0;
                }
                for (j = 0; j < n; j++) {
-                    c[0][j]= 0;
+                    LCSLength[0][j]= 0;
                }
 
-               for (i = 1; i < m; i++) {
-                    for (j = 1; j < n; j++) {
-                         if (X.charAt(i) == Y.charAt(j)) {
-                              c[i][j] = c[i - 1][j - 1] + 1;
-                              b[i][j] = b[i-1][j-1];
-                         } else if (c[i-1][j] >= c[i][j-1]) {
-                              c[i][j] = c[i-1][j];
-                              b[i][j] = b[i-1][j];
+               for (i = 1; i < m + 1; i++) {
+                    for (j = 1; j < n + 1; j++) {
+                         if (X.charAt(i-1) == Y.charAt(j-1)) {
+                              LCSLength[i][j] = LCSLength[i - 1][j - 1] + 1;
+                         } else if (LCSLength[i-1][j] >= LCSLength[i][j-1]) {
+                              LCSLength[i][j] = LCSLength[i-1][j];
                          } else {
-                              c[i][j] = c[i][j-1];
-                              b[i][j] = b[i][j-1];
+                              LCSLength[i][j] = LCSLength[i][j-1];
                          }
                     }
                }
-
+               return LCSLength[m][n];
           }
 
-          private static void Print_LCS(String X, int x_length, int y_length) {
-               if (x_length == 0 || y_length == 0) {
-                    return;
-               }
-               if (b[x_length][y_length] == b[x_length-1][y_length-1]) {
-                    Print_LCS(X, x_length-1, y_length-1);
-                    //System.out.println(X);
-               } else if(b[x_length][y_length] == b[x_length-1][y_length]) {
-                    Print_LCS(X, x_length-1, y_length);
-               } else {
-                    Print_LCS(X, x_length, y_length-1);
-               }
-          }
 
           public static void loadWordList() throws FileNotFoundException {
                File file = new File("words.txt");
@@ -82,29 +63,47 @@
 
           }
           public static void checkInList(String input) {
-               int inputSize = input.length();
-               List<String> ans= new ArrayList<String>();
                for (int i = 0; i < words.size(); i++) {
-                    LCS_Length(input, words.get(i));
-                    //System.out.println(c[input.length()-1][words.get(i).length()-1]);
-                    if (c[input.length()-1][words.get(i).length()-1] >= input.length()-1) {
-                       //System.out.println("pass");
-                        Print_LCS(words.get(i), input.length() - 1, words.get(i).length() - 1);
-                        possibilites.add(words.get(i));
+                    LCSScores.add(LCS_Length(input, words.get(i)));
+               }
+               List<Integer> max = LCSMax();
+               printCorrections(max, input);
+
+          }
+
+          private static void printCorrections(List<Integer> max, String input) {
+               List<String> possibilities = new ArrayList<String>();
+               System.out.println("Possible corrections based on LCS are: ");
+               for (int i = 0; i < max.size(); i++) {
+                    System.out.println(words.get(max.get(i)));
+                    possibilities.add(words.get(max.get(i)));
+               }
+               if (possibilities.contains(input)) {
+                    System.out.println("chosen correction is: " + input);
+               }
+               else {
+                    System.out.println("chosen correction is: " + words.get(max.get(max.size()-1)));
+               }
+
+
+          }
+
+          private static List<Integer> LCSMax() {
+               int max = 0;
+               List<Integer> maxLCS= new ArrayList<Integer>();
+               for (int i = 0; i < LCSScores.size(); i++) {
+                    if (LCSScores.get(i) > max) {
+                         max = LCSScores.get(i);
                     }
-               }
 
-               for (int i = 1; i < possibilites.size(); i++) {
-                    if (possibilites.get(i).length() == inputSize) {
-                         ans.add(possibilites.get(i));
+               }
+               for (int i = 0; i < LCSScores.size(); i++) {
+                    if (LCSScores.get(i) == max) {
+                         maxLCS.add(i);
                     }
+
                }
-
-               for (int i = 0; i < ans.size(); i++) {
-                    System.out.println(ans.get(i));
-               }
-
-
+               return maxLCS;
           }
 
           public static void main(String[] args) throws FileNotFoundException {
