@@ -1,15 +1,14 @@
-     /* ***************************************** * CSCI205 - Software Engineering and Design * Fall 2019
-      * Instructor: Prof. Brian King
+     /* ***************************************** * CSCI311
+      * Instructor: Prof. Talmage
       *
-      * Name: Bea Casey
-      * Section: 11am * Date: 11/9/20
+      * Name: Bea Casey, Wenyi Qian, Sam Citron, John Hunt
+      * Date: 11/9/20
       * Time: 8:11 PM
       *
       * Project: 311FinalProject
-      * Package: PACKAGE_NAME
       * Class: SpellCheck
       *
-      * Description:
+      * Description: A spell-check algorithm implemented with a LCS algorithm
       *
       * **************************************** */
 
